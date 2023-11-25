@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { upload } from './middlewares/multer.middleware.js'
 import uploadOnCloudinary from './utils/cloudinary/cloudinary.js'
+import Db from './DataBaseConnection/db.js'
 const app = express();
 
 app.use(cors());
@@ -42,7 +43,11 @@ app.post('/api/get', (req, res) => {
 
 
 
-
-app.listen(process.env.port, () => {
-    console.log(`app is running at http://localhost:${process.env.port}`)
-})
+Db().then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`App is running at http://localhost:${process.env.PORT}`);
+    });
+  }).catch((error) => {
+    console.error(error);
+  });
+  
